@@ -1,0 +1,17 @@
+[project]
+name = "chimera"
+version = "0.1.0"
+description = "Project Chimera: spec-driven autonomous influencer infrastructure"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "UNLICENSED" }
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

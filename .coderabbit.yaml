@@ -1,0 +1,10 @@
+reviews:
+  auto_review: true
+  instructions: |
+    Check for Spec Alignment:
+    - Ensure changes reference and comply with specs/.
+    - Reject implementation code if specs are missing or ambiguous.
+
+    Check for Security:
+    - Flag hard-coded secrets or unsafe defaults.
+    - Require least-privilege patterns and audit logging.
