@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY pyproject.toml README.md /app/
 COPY tests /app/tests
+COPY chimera /app/chimera
 COPY specs /app/specs
 COPY skills /app/skills
 COPY research /app/research
