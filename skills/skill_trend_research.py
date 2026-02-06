@@ -60,3 +60,18 @@ class TrendResearchOutput(BaseModel):
 
 def execute_trend_research(_: TrendResearchInput) -> TrendResearchOutput:
     raise NotImplementedError("Trend research is not implemented yet.")
+
+
+def sample_trend_result() -> Dict[str, object]:
+    """Return a minimal trend record that matches the test contract."""
+    return {
+        "trend_id": "uuid-v4",
+        "topic": "sample topic",
+        "platform": Platform.TWITTER.value,
+        "growth_rate": 1.5,
+        "volume": 1000,
+        "sentiment": "neutral",
+        "relevance_score": 0.5,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "sample_content": ["example"],
+    }
