@@ -14,6 +14,14 @@ Project Chimera is a requirements-first repository that captures product, techni
 - [specs/](specs/) Functional and technical requirements.
 - [tests/](tests/) Tests validating interface expectations.
 
+## Key Specs
+- [specs/functional.md](specs/functional.md) Functional requirements and acceptance criteria.
+- [specs/technical.md](specs/technical.md) Data, backend, security, and MCP requirements.
+- [docs/frontend_spec.md](docs/frontend_spec.md) UI screens, flows, and component contracts.
+- [docs/mcp_configuration.md](docs/mcp_configuration.md) MCP server inventory and tool schemas.
+- [docs/agentic_trajectory.md](docs/agentic_trajectory.md) Evidence checklist for workflow growth.
+- [docs/adr/0001-spec-first-architecture.md](docs/adr/0001-spec-first-architecture.md) Architecture decision record.
+
 ## Getting Started
 ### Prerequisites
 - Python 3.10+ recommended
