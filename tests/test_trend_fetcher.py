@@ -5,6 +5,7 @@ These tests MUST FAIL initially - they define what AI agents need to build.
 """
 
 import pytest
+from pydantic import ValidationError
 from datetime import datetime, timezone
 from skills.skill_trend_research import (
     TrendResearchInput,
@@ -84,7 +85,6 @@ def test_platform_enum_values():
 
 def test_confidence_score_range():
     """Test that confidence scores are within valid range"""
-    # This test will fail until implementation exists
     output = TrendResearchOutput(
         success=False,
         trends_found=0,
@@ -96,8 +96,53 @@ def test_confidence_score_range():
         execution_time_ms=0,
     )
 
-    # Pydantic should validate this, but test will fail as expected
     assert 0.0 <= output.confidence_score <= 1.0
+
+
+def test_confidence_score_invalid_raises():
+    """Test that invalid confidence scores raise validation errors"""
+    with pytest.raises(ValidationError):
+        TrendResearchOutput(
+            success=False,
+            trends_found=0,
+            trends=[],
+            analysis_summary="",
+            confidence_score=-0.1,
+            platform_breakdown={},
+            timestamp=datetime.now(timezone.utc),
+            execution_time_ms=0,
+        )
+
+
+def test_invalid_platform_rejected():
+    """Test that invalid platform values are rejected"""
+    with pytest.raises(ValidationError):
+        TrendResearchInput(
+            platforms=["myspace"],
+            keywords=["test"],
+            time_range_hours=1,
+        )
+
+
+def test_sample_trend_result_has_valid_types():
+    """Ensure the sample trend result uses valid types and ranges"""
+    result = sample_trend_result()
+
+    assert isinstance(result["trend_id"], str)
+    assert isinstance(result["topic"], str)
+    assert result["platform"] in {
+        Platform.TWITTER.value,
+        Platform.INSTAGRAM.value,
+        Platform.TIKTOK.value,
+        Platform.YOUTUBE.value,
+    }
+    assert isinstance(result["growth_rate"], float)
+    assert isinstance(result["volume"], int)
+    assert result["sentiment"] in {"positive", "neutral", "negative"}
+    assert 0.0 <= result["relevance_score"] <= 1.0
+    assert isinstance(result["timestamp"], str)
+    assert result["timestamp"].endswith("Z")
+    assert isinstance(result["sample_content"], list)
 
 
 if __name__ == "__main__":
