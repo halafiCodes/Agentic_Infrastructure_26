@@ -15,12 +15,24 @@ from skills.skill_trend_research import (
     TrendResearchOutput,
     execute_trend_research,
 )
+from skills.skill_generate_content import (
+    ContentGenerateInput,
+    ContentGenerateOutput,
+    execute_generate_content,
+)
+from skills.skill_publish_content import (
+    PublishContentInput,
+    PublishContentOutput,
+    execute_publish_content,
+)
 
 
 def test_all_skills_have_input_output_models():
     """Test that each skill module has input and output models"""
     skill_modules = [
         ("skill_trend_research", TrendResearchInput, TrendResearchOutput),
+        ("skill_generate_content", ContentGenerateInput, ContentGenerateOutput),
+        ("skill_publish_content", PublishContentInput, PublishContentOutput),
     ]
 
     for module_name, input_model, output_model in skill_modules:
@@ -38,6 +50,8 @@ def test_all_skills_have_execute_function():
     """Test that each skill has an execute function"""
     skill_functions = [
         ("skill_trend_research", execute_trend_research),
+        ("skill_generate_content", execute_generate_content),
+        ("skill_publish_content", execute_publish_content),
     ]
 
     for module_name, execute_func in skill_functions:
@@ -49,7 +63,7 @@ def test_all_skills_have_execute_function():
 
 def test_input_models_have_field_descriptions():
     """Test that all input model fields have descriptions (for AI clarity)"""
-    input_models = [TrendResearchInput]
+    input_models = [TrendResearchInput, ContentGenerateInput, PublishContentInput]
 
     for model in input_models:
         for field_name, field in model.model_fields.items():
@@ -63,7 +77,6 @@ def test_input_models_have_field_descriptions():
 
 def test_skill_execution_raises_not_implemented():
     """Test that skills raise NotImplementedError (they should be implemented by AI)"""
-    # Trend research skill
     trend_input = TrendResearchInput(
         platforms=["twitter"], keywords=["test"], time_range_hours=1
     )
@@ -71,40 +84,35 @@ def test_skill_execution_raises_not_implemented():
     with pytest.raises(NotImplementedError):
         execute_trend_research(trend_input)
 
+    content_input = ContentGenerateInput(
+        trend_id="trend-1", tone="playful", length="short"
+    )
+
+    with pytest.raises(NotImplementedError):
+        execute_generate_content(content_input)
+
+    publish_input = PublishContentInput(content_id="content-1", platform="tiktok")
+
+    with pytest.raises(NotImplementedError):
+        execute_publish_content(publish_input)
+
 
 def test_skill_output_includes_confidence_score():
-    """Test that all skill outputs include confidence scores"""
-    output_models = [TrendResearchOutput]
+    """Test that trend output includes confidence score"""
+    field = TrendResearchOutput.model_fields["confidence_score"]
+    assert isinstance(field.annotation, type) and field.annotation == float
 
-    for model in output_models:
-        assert (
-            "confidence_score" in model.model_fields
-        ), f"{model.__name__} missing confidence_score field"
-
-        field = model.model_fields["confidence_score"]
-        # FIX: Use isinstance for type comparison
-        assert (
-            isinstance(field.annotation, type) and field.annotation == float
-        ), "confidence_score must be float"
-
-        # Check for ge/le constraints if they exist
-        if hasattr(field, "ge"):
-            assert field.ge == 0.0, "confidence_score minimum should be 0.0"
-        if hasattr(field, "le"):
-            assert field.le == 1.0, "confidence_score maximum should be 1.0"
+    if hasattr(field, "ge"):
+        assert field.ge == 0.0, "confidence_score minimum should be 0.0"
+    if hasattr(field, "le"):
+        assert field.le == 1.0, "confidence_score maximum should be 1.0"
 
 
 def test_skill_output_includes_timestamp():
-    """Test that all skill outputs include timestamps"""
-    output_models = [TrendResearchOutput]
-
-    for model in output_models:
-        assert (
-            "timestamp" in model.model_fields
-        ), f"{model.__name__} missing timestamp field"
-        # FIX: Check the annotation properly
-        field = model.model_fields["timestamp"]
-        assert field.annotation == datetime, "timestamp must be datetime"
+    """Test that trend output includes timestamps"""
+    assert "timestamp" in TrendResearchOutput.model_fields
+    field = TrendResearchOutput.model_fields["timestamp"]
+    assert field.annotation == datetime, "timestamp must be datetime"
 
 
 if __name__ == "__main__":

@@ -45,6 +45,10 @@ Skills are runtime capability packages invoked by the agent. These are contracts
   "length": "short"
 }
 ```
+**Pydantic Models**
+- ContentGenerateInput
+- ContentGenerateOutput
+
 **Dependencies**
 - MCP tool: generate_content
 - Data store: content (PostgreSQL)
@@ -52,6 +56,7 @@ Skills are runtime capability packages invoked by the agent. These are contracts
 **Output**
 ```json
 {
+  "success": true,
   "content_id": "string",
   "caption": "string",
   "hashtags": ["string"],
@@ -72,6 +77,10 @@ Skills are runtime capability packages invoked by the agent. These are contracts
   "schedule_at": "2026-02-04T00:00:00Z"
 }
 ```
+**Pydantic Models**
+- PublishContentInput
+- PublishContentOutput
+
 **Dependencies**
 - MCP tool: post_content
 - Data store: publish_status (PostgreSQL)
@@ -79,6 +88,7 @@ Skills are runtime capability packages invoked by the agent. These are contracts
 **Output**
 ```json
 {
+  "success": true,
   "publish_id": "string",
   "status": "scheduled",
   "platform": "tiktok"
