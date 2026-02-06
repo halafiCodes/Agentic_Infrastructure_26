@@ -14,6 +14,17 @@ This document records evidence of agentic workflow growth over time.
 - IDE chat history path: <add path or link>
 - Screenshots folder: <add path or link>
 
+## Actual Evidence (Paste Below)
+### MCP Sense Telemetry (Required)
+```
+<paste MCP Sense telemetry excerpt here>
+```
+
+### IDE Chat History (Required)
+```
+<paste IDE chat history excerpt here>
+```
+
 ## Growth Narrative (Template)
 - Day 1: <summary of early workflows and basic tasks>
 - Day 2: <summary of multi-step planning and orchestration>
